@@ -34,21 +34,49 @@ $tarif = $conn->query("SELECT * FROM tarif ORDER BY daya ASC");
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: #f0f9ff;
     }
-    .form-section, .table-container {
-      margin-top: 30px;
+    .sidebar {
+      height: 100vh;
+      background-color: #0d6efd;
+      padding: 20px;
+      color: white;
     }
-    .btn-back {
-      margin-top: 30px;
+    .sidebar a {
+      color: white;
+      display: block;
+      margin: 15px 0;
+      text-decoration: none;
+    }
+    .sidebar a:hover {
+      text-decoration: underline;
+    }
+    .main-content {
+      margin-left: 220px;
+      padding: 30px;
     }
   </style>
 </head>
 <body>
-  <div class="container py-5">
-    <h2 class="text-center mb-4 text-warning">⚙️ Kelola Tarif Listrik</h2>
 
-    <div class="form-section mb-4">
+<div class="d-flex">
+  <!-- Sidebar -->
+  <div class="sidebar position-fixed">
+    <h4>⚡ Admin Panel</h4>
+    <hr style="border-color:white;">
+    <p>👋 Halo, <?= $_SESSION['nama'] ?></p>
+    <a href="dashboard.php">🏠 Dashboard</a>
+    <a href="pelanggan.php">👤 Data Pelanggan</a>
+    <a href="tagihan.php">📄 Data Tagihan</a>
+    <a href="tarif.php">⚙️ Kelola Tarif</a>
+    <a href="pembayaran.php">💰 Data Pembayaran</a>
+    <a href="../logout.php" class="btn btn-danger mt-4">🚪 Logout</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content w-100">
+    <h2 class="text-warning mb-4">⚙️ Kelola Tarif Listrik</h2>
+
+    <div class="mb-4">
       <form method="post" class="row g-3">
         <div class="col-md-6">
           <input type="number" name="daya" placeholder="Daya (VA)" class="form-control" required>
@@ -62,7 +90,7 @@ $tarif = $conn->query("SELECT * FROM tarif ORDER BY daya ASC");
       </form>
     </div>
 
-    <div class="table-container">
+    <div class="table-responsive">
       <table class="table table-bordered table-striped">
         <thead class="table-light">
           <tr>
@@ -84,10 +112,8 @@ $tarif = $conn->query("SELECT * FROM tarif ORDER BY daya ASC");
         </tbody>
       </table>
     </div>
-
-    <div class="text-center btn-back">
-      <a href="dashboard.php" class="btn btn-outline-primary">⬅ Kembali ke Dashboard</a>
-    </div>
   </div>
+</div>
+
 </body>
 </html>

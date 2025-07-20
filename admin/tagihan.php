@@ -21,21 +21,49 @@ $tagihan = $conn->query("SELECT t.*, p.nama_pelanggan, tr.tarifperkwh, (t.jumlah
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: #f8fafc;
     }
-    .table-container {
-      margin-top: 40px;
+    .sidebar {
+      height: 100vh;
+      background-color: #0d6efd;
+      padding: 20px;
+      color: white;
     }
-    .btn-back {
-      margin-top: 20px;
+    .sidebar a {
+      color: white;
+      display: block;
+      margin: 15px 0;
+      text-decoration: none;
+    }
+    .sidebar a:hover {
+      text-decoration: underline;
+    }
+    .main-content {
+      margin-left: 220px;
+      padding: 30px;
     }
   </style>
 </head>
 <body>
-  <div class="container py-5">
-    <h2 class="text-center mb-4 text-success">📄 Data Tagihan Pelanggan</h2>
 
-    <div class="table-responsive table-container">
+<div class="d-flex">
+  <!-- Sidebar -->
+  <div class="sidebar position-fixed">
+    <h4>⚡ Admin Panel</h4>
+    <hr style="border-color:white;">
+    <p>👋 Halo, <?= $_SESSION['nama'] ?></p>
+    <a href="dashboard.php">🏠 Dashboard</a>
+    <a href="pelanggan.php">👤 Data Pelanggan</a>
+    <a href="tagihan.php">📄 Data Tagihan</a>
+    <a href="tarif.php">⚙️ Kelola Tarif</a>
+    <a href="pembayaran.php">💰 Data Pembayaran</a>
+    <a href="../logout.php" class="btn btn-danger mt-4">🚪 Logout</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content w-100">
+    <h2 class="text-success mb-4">📄 Data Tagihan Pelanggan</h2>
+
+    <div class="table-responsive">
       <table class="table table-bordered table-striped">
         <thead class="table-light">
           <tr>
@@ -54,17 +82,19 @@ $tagihan = $conn->query("SELECT t.*, p.nama_pelanggan, tr.tarifperkwh, (t.jumlah
             <td><?= $row['bulan'] ?></td>
             <td><?= $row['tahun'] ?></td>
             <td><?= $row['jumlah_meter'] ?></td>
-            <td><span class="badge bg-<?= $row['status'] == 'sudah dibayar' ? 'success' : 'warning' ?>"><?= $row['status'] ?></span></td>
+            <td>
+              <span class="badge bg-<?= $row['status'] == 'sudah dibayar' ? 'success' : ($row['status'] == 'belum dibayar' ? 'warning' : 'secondary') ?>">
+                <?= $row['status'] ?>
+              </span>
+            </td>
             <td>Rp <?= number_format($row['total']) ?></td>
           </tr>
           <?php } ?>
         </tbody>
       </table>
     </div>
-
-    <div class="text-center btn-back">
-      <a href="dashboard.php" class="btn btn-outline-primary">⬅ Kembali ke Dashboard</a>
-    </div>
   </div>
+</div>
+
 </body>
 </html>

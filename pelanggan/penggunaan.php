@@ -6,8 +6,9 @@ $id_pelanggan = $_SESSION['id_pelanggan'];
 // Hapus data
 if (isset($_GET['hapus'])) {
   $id = $_GET['hapus'];
-  $conn->query("DELETE FROM penggunaan WHERE id_penggunaan='$id' AND id_pelanggan='$id_pelanggan'");
+  // Hapus tagihan terlebih dahulu agar tidak kena FK error
   $conn->query("DELETE FROM tagihan WHERE id_penggunaan='$id'");
+  $conn->query("DELETE FROM penggunaan WHERE id_penggunaan='$id' AND id_pelanggan='$id_pelanggan'");
   header("Location: penggunaan.php");
   exit;
 }
@@ -58,50 +59,91 @@ if (isset($_GET['edit'])) {
   <meta charset="UTF-8">
   <title>Penggunaan Listrik</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #e6f0ff, #f8f9fa);
+      font-family: 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      padding-bottom: 70px; /* space untuk tombol bawah */
+    }
+
+    .btn-action {
+      margin-right: 5px;
+    }
+
+    .fixed-back {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+    }
+  </style>
 </head>
 <body>
   <div class="container py-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <h2 class="text-primary">Penggunaan Listrik</h2>
+    <div class="mb-4 text-center">
+      <h2 class="text-primary"><i class="bi bi-lightning-charge-fill"></i> Penggunaan Listrik</h2>
     </div>
 
     <form method="post" class="mb-5">
-      <?php if ($edit) { echo "<input type='hidden' name='id_penggunaan' value='{$data_edit['id_penggunaan']}'>"; } ?>
+      <?php if ($edit): ?>
+        <input type="hidden" name="id_penggunaan" value="<?= $data_edit['id_penggunaan'] ?>">
+      <?php endif; ?>
       <div class="row mb-3">
-        <div class="col-md-3"><input type="text" name="bulan" placeholder="Bulan" class="form-control" value="<?= $edit ? $data_edit['bulan'] : '' ?>" required></div>
-        <div class="col-md-3"><input type="number" name="tahun" placeholder="Tahun" class="form-control" value="<?= $edit ? $data_edit['tahun'] : '' ?>" required></div>
-        <div class="col-md-3"><input type="number" name="meter_awal" placeholder="Meter Awal" class="form-control" value="<?= $edit ? $data_edit['meter_awal'] : '' ?>" required></div>
-        <div class="col-md-3"><input type="number" name="meter_akhir" placeholder="Meter Akhir" class="form-control" value="<?= $edit ? $data_edit['meter_akhir'] : '' ?>" required></div>
+        <div class="col-md-3">
+          <input type="text" name="bulan" placeholder="Bulan" class="form-control" value="<?= $edit ? $data_edit['bulan'] : '' ?>" required>
+        </div>
+        <div class="col-md-3">
+          <input type="number" name="tahun" placeholder="Tahun" class="form-control" value="<?= $edit ? $data_edit['tahun'] : '' ?>" required>
+        </div>
+        <div class="col-md-3">
+          <input type="number" name="meter_awal" placeholder="Meter Awal" class="form-control" value="<?= $edit ? $data_edit['meter_awal'] : '' ?>" required>
+        </div>
+        <div class="col-md-3">
+          <input type="number" name="meter_akhir" placeholder="Meter Akhir" class="form-control" value="<?= $edit ? $data_edit['meter_akhir'] : '' ?>" required>
+        </div>
       </div>
       <button type="submit" name="<?= $edit ? 'update' : 'tambah' ?>" class="btn btn-<?= $edit ? 'warning' : 'success' ?> w-100">
+        <i class="bi <?= $edit ? 'bi-pencil-square' : 'bi-save' ?>"></i>
         <?= $edit ? 'Update Data' : 'Simpan Penggunaan' ?>
       </button>
     </form>
 
-    <h4 class="mb-3">Riwayat Penggunaan</h4>
+    <h4 class="mb-3 text-secondary">Riwayat Penggunaan</h4>
     <table class="table table-bordered table-striped">
       <thead class="table-light">
-        <tr><th>Bulan</th><th>Tahun</th><th>Meter Awal</th><th>Meter Akhir</th><th>Aksi</th></tr>
+        <tr>
+          <th>Bulan</th>
+          <th>Tahun</th>
+          <th>Meter Awal</th>
+          <th>Meter Akhir</th>
+          <th>Aksi</th>
+        </tr>
       </thead>
       <tbody>
-        <?php while ($row = $penggunaan->fetch_assoc()) { ?>
-        <tr>
-          <td><?= $row['bulan'] ?></td>
-          <td><?= $row['tahun'] ?></td>
-          <td><?= $row['meter_awal'] ?></td>
-          <td><?= $row['meter_akhir'] ?></td>
-          <td>
-            <a href="penggunaan.php?edit=<?= $row['id_penggunaan'] ?>" class="btn btn-sm btn-warning">Edit</a>
-            <a href="penggunaan.php?hapus=<?= $row['id_penggunaan'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin hapus?')">Hapus</a>
-          </td>
-        </tr>
-        <?php } ?>
+        <?php while ($row = $penggunaan->fetch_assoc()): ?>
+          <tr>
+            <td><?= $row['bulan'] ?></td>
+            <td><?= $row['tahun'] ?></td>
+            <td><?= $row['meter_awal'] ?></td>
+            <td><?= $row['meter_akhir'] ?></td>
+            <td>
+              <a href="penggunaan.php?edit=<?= $row['id_penggunaan'] ?>" class="btn btn-sm btn-warning btn-action"><i class="bi bi-pencil-square"></i></a>
+              <a href="penggunaan.php?hapus=<?= $row['id_penggunaan'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin hapus data ini?')">
+                <i class="bi bi-trash3-fill"></i>
+              </a>
+            </td>
+          </tr>
+        <?php endwhile; ?>
       </tbody>
     </table>
+  </div>
 
-    <div class="text-center mt-4">
-      <a href="dashboard.php" class="btn btn-outline-primary">⬅ Kembali ke Dashboard</a>
-    </div>
+  <!-- Tombol kembali ke dashboard di kiri bawah -->
+  <div class="fixed-back">
+    <a href="dashboard.php" class="btn btn-outline-primary">
+      <i class="bi bi-arrow-left-circle"></i> Kembali ke Dashboard
+    </a>
   </div>
 </body>
 </html>

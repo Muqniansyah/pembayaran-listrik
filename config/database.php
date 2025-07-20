@@ -2,7 +2,7 @@
 $host = "localhost";
 $user = "root";
 $pass = "";
-$db   = "listrik_db";
+$db   = "db_listrik";
 
 $conn = new mysqli($host, $user, $pass, $db);
 

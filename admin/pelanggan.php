@@ -17,21 +17,57 @@ $pelanggan = $conn->query("SELECT p.*, t.daya, t.tarifperkwh FROM pelanggan p JO
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: #f0f9ff;
     }
-    .table-container {
-      margin-top: 40px;
+    .sidebar {
+      height: 100vh;
+      background-color: #0d6efd;
+      padding: 20px;
+      color: white;
     }
-    .btn-back {
-      margin-top: 20px;
+    .sidebar a {
+      color: white;
+      display: block;
+      margin: 15px 0;
+      text-decoration: none;
+    }
+    .sidebar a:hover {
+      text-decoration: underline;
+    }
+    .main-content {
+      margin-left: 220px;
+      padding: 30px;
+    }
+    .card {
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .action-btn {
+      display: flex;
+      gap: 5px;
     }
   </style>
 </head>
 <body>
-  <div class="container py-5">
-    <h2 class="text-center mb-4 text-primary">📋 Data Pelanggan</h2>
 
-    <div class="table-responsive table-container">
+<div class="d-flex">
+  <!-- Sidebar -->
+  <div class="sidebar position-fixed">
+    <h4>⚡ Admin Panel</h4>
+    <hr style="border-color:white;">
+    <p>👋 Halo, <?= $_SESSION['nama'] ?></p>
+    <a href="dashboard.php">🏠 Dashboard</a>
+    <a href="pelanggan.php">👤 Data Pelanggan</a>
+    <a href="tagihan.php">📄 Data Tagihan</a>
+    <a href="tarif.php">⚙️ Kelola Tarif</a>
+    <a href="pembayaran.php">💰 Data Pembayaran</a>
+    <a href="../logout.php" class="btn btn-danger mt-4">🚪 Logout</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content w-100">
+    <h2 class="text-primary mb-4">📋 Data Pelanggan</h2>
+
+    <div class="table-responsive">
       <table class="table table-bordered table-striped">
         <thead class="table-light">
           <tr>
@@ -41,6 +77,7 @@ $pelanggan = $conn->query("SELECT p.*, t.daya, t.tarifperkwh FROM pelanggan p JO
             <th>Alamat</th>
             <th>Daya</th>
             <th>Tarif / kWh</th>
+            <th>Aksi</th>
           </tr>
         </thead>
         <tbody>
@@ -52,15 +89,17 @@ $pelanggan = $conn->query("SELECT p.*, t.daya, t.tarifperkwh FROM pelanggan p JO
             <td><?= $row['alamat'] ?></td>
             <td><?= $row['daya'] ?> VA</td>
             <td>Rp <?= number_format($row['tarifperkwh']) ?></td>
+            <td class="action-btn">
+              <a href="edit_pelanggan.php?id=<?= $row['id_pelanggan'] ?>" class="btn btn-sm btn-warning">Edit</a>
+              <a href="hapus_pelanggan.php?id=<?= $row['id_pelanggan'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus pelanggan ini?')">Hapus</a>
+            </td>
           </tr>
           <?php } ?>
         </tbody>
       </table>
     </div>
-
-    <div class="text-center btn-back">
-      <a href="dashboard.php" class="btn btn-outline-primary">⬅ Kembali ke Dashboard</a>
-    </div>
   </div>
+</div>
+
 </body>
 </html>

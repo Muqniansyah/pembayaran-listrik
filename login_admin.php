@@ -30,7 +30,9 @@ if (isset($_POST['login'])) {
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #e0f2fe, #f8fafc);
+      /* background: linear-gradient(135deg, #e0f2fe, #f8fafc); */
+      background-image: url("./assets/img/login2.jpg");
+      background-size: cover;
       display: flex;
       justify-content: center;
       align-items: center;

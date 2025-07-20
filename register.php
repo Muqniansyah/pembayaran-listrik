@@ -33,7 +33,8 @@ if (isset($_POST['register'])) {
   <style>
     body {
       font-family: "Segoe UI", sans-serif;
-      background: linear-gradient(135deg, #dbeafe, #eff6ff);
+      /* background: linear-gradient(135deg, #dbeafe, #eff6ff); */
+      background-image: url("./assets/img/login.jpg");
       display: flex;
       justify-content: center;
       align-items: center;
@@ -117,7 +118,7 @@ if (isset($_POST['register'])) {
 <body>
 
   <div class="register-container">
-    <h2>Registrasi Pelanggan</h2>
+    <h2>Daftar</h2>
 
     <?php if (isset($error)) echo "<p class='error'>$error</p>"; ?>
     <?php if (isset($success)) echo "<p class='success'>$success</p>"; ?>
@@ -144,7 +145,7 @@ if (isset($_POST['register'])) {
     </form>
 
     <div class="login-link">
-      <p>Sudah punya akun? <a href="login_pelanggan.php">Login di sini</a></p>
+      <p>Sudah punya akun? <a href="login_pelanggan.php">Masuk di sini</a></p>
     </div>
   </div>
 

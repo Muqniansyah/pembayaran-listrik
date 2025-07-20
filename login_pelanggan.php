@@ -116,7 +116,7 @@ if (isset($_POST['login'])) {
 <body>
 
   <div class="login-container">
-    <h2>Login Pelanggan</h2>
+    <h2>Masuk</h2>
 
     <?php if (isset($error)) echo "<p class='error'>$error</p>"; ?>
 
