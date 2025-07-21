@@ -19,9 +19,12 @@ CREATE TABLE IF NOT EXISTS `level` (
   `id_level` int NOT NULL AUTO_INCREMENT,
   `nama_level` varchar(50) NOT NULL,
   PRIMARY KEY (`id_level`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table db_listrik.level: ~0 rows (approximately)
+-- Dumping data for table db_listrik.level: ~2 rows (approximately)
+INSERT INTO `level` (`id_level`, `nama_level`) VALUES
+	(1, 'admin'),
+	(2, 'pelanggan');
 
 -- Dumping structure for table db_listrik.pelanggan
 CREATE TABLE IF NOT EXISTS `pelanggan` (
@@ -36,11 +39,11 @@ CREATE TABLE IF NOT EXISTS `pelanggan` (
   UNIQUE KEY `nomor_kwh` (`nomor_kwh`),
   KEY `id_tarif` (`id_tarif`),
   CONSTRAINT `pelanggan_ibfk_1` FOREIGN KEY (`id_tarif`) REFERENCES `tarif` (`id_tarif`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table db_listrik.pelanggan: ~0 rows (approximately)
 INSERT INTO `pelanggan` (`id_pelanggan`, `username`, `password`, `nomor_kwh`, `nama_pelanggan`, `alamat`, `id_tarif`) VALUES
-	(1, 'muni', 'muniganteng', '234532', 'Muqniansyah', 'jalan bahagia', 3);
+	(3, 'muni', 'muniganteng', '234532', 'Muqniansyah Arifin', 'jalan bahagia', 7);
 
 -- Dumping structure for table db_listrik.pembayaran
 CREATE TABLE IF NOT EXISTS `pembayaran` (
@@ -62,11 +65,11 @@ CREATE TABLE IF NOT EXISTS `pembayaran` (
   CONSTRAINT `pembayaran_ibfk_1` FOREIGN KEY (`id_tagihan`) REFERENCES `tagihan` (`id_tagihan`),
   CONSTRAINT `pembayaran_ibfk_2` FOREIGN KEY (`id_tarif`) REFERENCES `tarif` (`id_tarif`),
   CONSTRAINT `pembayaran_ibfk_3` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table db_listrik.pembayaran: ~0 rows (approximately)
 INSERT INTO `pembayaran` (`id_pembayaran`, `id_tagihan`, `id_tarif`, `tanggal_pembayaran`, `bulan_bayar`, `tahun_bayar`, `biaya_admin`, `total_bayar`, `id_user`, `bukti_bayar`, `status_bayar`) VALUES
-	(5, 3, NULL, '2025-07-20', '0', NULL, NULL, 146983.83, NULL, 'bukti_3_1752996881.png', 'menunggu verifikasi');
+	(8, 6, NULL, '2025-07-20', '0', NULL, NULL, 12100000.00, NULL, 'bukti_6_1753018686.jpg', 'sudah diverifikasi');
 
 -- Dumping structure for table db_listrik.penggunaan
 CREATE TABLE IF NOT EXISTS `penggunaan` (
@@ -79,11 +82,11 @@ CREATE TABLE IF NOT EXISTS `penggunaan` (
   PRIMARY KEY (`id_penggunaan`),
   KEY `id_pelanggan` (`id_pelanggan`),
   CONSTRAINT `penggunaan_ibfk_1` FOREIGN KEY (`id_pelanggan`) REFERENCES `pelanggan` (`id_pelanggan`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table db_listrik.penggunaan: ~0 rows (approximately)
 INSERT INTO `penggunaan` (`id_penggunaan`, `id_pelanggan`, `bulan`, `tahun`, `meter_awal`, `meter_akhir`) VALUES
-	(3, 1, 'maret', '2021', 23223, 123212);
+	(6, 3, 'januari', '2012', 1232, 21232);
 
 -- Dumping structure for table db_listrik.tagihan
 CREATE TABLE IF NOT EXISTS `tagihan` (
@@ -99,11 +102,11 @@ CREATE TABLE IF NOT EXISTS `tagihan` (
   KEY `id_pelanggan` (`id_pelanggan`),
   CONSTRAINT `tagihan_ibfk_1` FOREIGN KEY (`id_penggunaan`) REFERENCES `penggunaan` (`id_penggunaan`),
   CONSTRAINT `tagihan_ibfk_2` FOREIGN KEY (`id_pelanggan`) REFERENCES `pelanggan` (`id_pelanggan`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table db_listrik.tagihan: ~1 rows (approximately)
+-- Dumping data for table db_listrik.tagihan: ~0 rows (approximately)
 INSERT INTO `tagihan` (`id_tagihan`, `id_penggunaan`, `id_pelanggan`, `bulan`, `tahun`, `jumlah_meter`, `status`) VALUES
-	(3, 3, 1, 'maret', '2021', 99989, 'menunggu verifikasi');
+	(6, 6, 3, 'januari', '2012', 20000, 'sudah dibayar');
 
 -- Dumping structure for table db_listrik.tarif
 CREATE TABLE IF NOT EXISTS `tarif` (
@@ -111,15 +114,14 @@ CREATE TABLE IF NOT EXISTS `tarif` (
   `daya` varchar(20) DEFAULT NULL,
   `tarifperkwh` decimal(10,2) DEFAULT NULL,
   PRIMARY KEY (`id_tarif`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table db_listrik.tarif: ~0 rows (approximately)
 INSERT INTO `tarif` (`id_tarif`, `daya`, `tarifperkwh`) VALUES
-	(1, '450', 415.00),
-	(2, '	900', 605.00),
-	(3, '1300', 1.47),
-	(4, '2200', 1.47),
-	(5, '3500', 1.70);
+	(6, '450', 415.00),
+	(7, '900', 605.00),
+	(8, '1300', 1478.00),
+	(9, '2200', 1467.00);
 
 -- Dumping structure for table db_listrik.user
 CREATE TABLE IF NOT EXISTS `user` (
@@ -131,9 +133,11 @@ CREATE TABLE IF NOT EXISTS `user` (
   PRIMARY KEY (`id_user`),
   KEY `id_level` (`id_level`),
   CONSTRAINT `user_ibfk_1` FOREIGN KEY (`id_level`) REFERENCES `level` (`id_level`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table db_listrik.user: ~0 rows (approximately)
+-- Dumping data for table db_listrik.user: ~1 rows (approximately)
+INSERT INTO `user` (`id_user`, `username`, `password`, `nama_admin`, `id_level`) VALUES
+	(1, 'admin', 'admin123', NULL, NULL);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

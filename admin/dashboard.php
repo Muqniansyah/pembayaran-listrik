@@ -53,7 +53,6 @@ $penggunaan_meter = $conn->query("SELECT SUM(jumlah_meter) AS total FROM tagihan
   <div class="sidebar position-fixed">
     <h4>⚡ Admin Panel</h4>
     <hr style="border-color:white;">
-    <p>👋 Halo, <?= $_SESSION['nama'] ?></p>
     <a href="dashboard.php">🏠 Dashboard</a>
     <a href="pelanggan.php">👤 Data Pelanggan</a>
     <a href="tagihan.php">📄 Data Tagihan</a>

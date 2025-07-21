@@ -63,7 +63,6 @@ $tarif = $conn->query("SELECT * FROM tarif ORDER BY daya ASC");
   <div class="sidebar position-fixed">
     <h4>⚡ Admin Panel</h4>
     <hr style="border-color:white;">
-    <p>👋 Halo, <?= $_SESSION['nama'] ?></p>
     <a href="dashboard.php">🏠 Dashboard</a>
     <a href="pelanggan.php">👤 Data Pelanggan</a>
     <a href="tagihan.php">📄 Data Tagihan</a>
