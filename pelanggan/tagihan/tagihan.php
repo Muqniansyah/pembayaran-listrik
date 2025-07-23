@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../config/database.php';
+include '../../config/database.php';
 $id_pelanggan = $_SESSION['id_pelanggan'];
 
 $tagihan = $conn->query("
@@ -72,7 +72,7 @@ $tagihan = $conn->query("
 
   <!-- Tombol kembali ke dashboard di kiri bawah -->
   <div class="fixed-back">
-    <a href="dashboard.php" class="btn btn-outline-primary">
+    <a href="../dashboard.php" class="btn btn-outline-primary">
       <i class="bi bi-arrow-left-circle"></i> Kembali ke Dashboard
     </a>
   </div>

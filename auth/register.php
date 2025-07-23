@@ -1,5 +1,5 @@
 <?php
-include 'config/database.php';
+include '../config/database.php';
 
 if (isset($_POST['register'])) {
   $username   = $_POST['username'];
@@ -34,7 +34,7 @@ if (isset($_POST['register'])) {
     body {
       font-family: "Segoe UI", sans-serif;
       /* background: linear-gradient(135deg, #dbeafe, #eff6ff); */
-      background-image: url("./assets/img/login.jpg");
+      background-image: url("../assets/img/login.jpg");
       display: flex;
       justify-content: center;
       align-items: center;
@@ -145,7 +145,7 @@ if (isset($_POST['register'])) {
     </form>
 
     <div class="login-link">
-      <p>Sudah punya akun? <a href="login_pelanggan.php">Masuk di sini</a></p>
+      <p>Sudah punya akun? <a href="login.php">Masuk di sini</a></p>
     </div>
   </div>
 

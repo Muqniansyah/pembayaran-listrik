@@ -5,7 +5,7 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'pelanggan') {
   exit;
 }
 
-require '../config/database.php';
+require '../../config/database.php';
 $id_pelanggan = $_SESSION['id_pelanggan'];
 
 // Ambil tagihan belum dibayar
@@ -108,7 +108,7 @@ $tagihanList = getTagihanBelumBayar($conn, $id_pelanggan);
 </div>
 
 <!-- Tombol kembali -->
-<a href="dashboard.php" class="btn btn-outline-secondary fixed-bottom-left">
+<a href="../dashboard.php" class="btn btn-outline-secondary fixed-bottom-left">
   <i class="bi bi-arrow-left-circle"></i> Kembali ke Dashboard
 </a>
 

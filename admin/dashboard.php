@@ -54,11 +54,11 @@ $penggunaan_meter = $conn->query("SELECT SUM(jumlah_meter) AS total FROM tagihan
     <h4>⚡ Admin Panel</h4>
     <hr style="border-color:white;">
     <a href="dashboard.php">🏠 Dashboard</a>
-    <a href="pelanggan.php">👤 Data Pelanggan</a>
-    <a href="tagihan.php">📄 Data Tagihan</a>
-    <a href="tarif.php">⚙️ Kelola Tarif</a>
-    <a href="pembayaran.php">💰 Data Pembayaran</a>
-    <a href="../logout.php" class="btn btn-danger mt-4">🚪 Logout</a>
+    <a href="./pelanggan/pelanggan.php">👤 Data Pelanggan</a>
+    <a href="./tagihan/tagihan.php">📄 Data Tagihan</a>
+    <a href="./tarif/tarif.php">⚙️ Kelola Tarif</a>
+    <a href="./pembayaran/pembayaran.php">💰 Data Pembayaran</a>
+    <a href="../auth/logout.php" class="btn btn-danger mt-4">🚪 Logout</a>
   </div>
 
   <!-- Main Content -->

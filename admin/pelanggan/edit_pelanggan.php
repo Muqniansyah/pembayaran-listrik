@@ -1,6 +1,7 @@
 <?php
 session_start();
-include '../config/database.php';
+include '../../config/database.php';
+
 if (!isset($_SESSION['login']) || $_SESSION['role'] != 'admin') {
   header("Location: ../login_admin.php");
   exit;

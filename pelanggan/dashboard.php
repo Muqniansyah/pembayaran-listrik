@@ -80,7 +80,7 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'pelanggan') {
 
       <!-- Input Penggunaan -->
       <div class="col-6 col-md-3">
-        <a href="penggunaan.php" class="card-link">
+        <a href="./penggunaan/penggunaan.php" class="card-link">
           <div class="card p-4 text-center border-0" style="background:#eef6ff;">
             <i class="bi bi-pencil-square text-primary fs-1"></i>
             <h5 class="text-primary">Input Penggunaan</h5>
@@ -90,7 +90,7 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'pelanggan') {
 
       <!-- Lihat Tagihan -->
       <div class="col-6 col-md-3">
-        <a href="tagihan.php" class="card-link">
+        <a href="./tagihan/tagihan.php" class="card-link">
           <div class="card p-4 text-center border-0" style="background:#e8f9f1;">
             <i class="bi bi-receipt text-success fs-1"></i>
             <h5 class="text-success">Lihat Tagihan</h5>
@@ -100,7 +100,7 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'pelanggan') {
 
       <!-- Pembayaran -->
       <div class="col-6 col-md-3">
-        <a href="pembayaran.php" class="card-link">
+        <a href="./pembayaran/pembayaran.php" class="card-link">
           <div class="card p-4 text-center border-0" style="background:#fff4e6;">
             <i class="bi bi-credit-card text-warning fs-1"></i>
             <h5 class="text-warning">Pembayaran</h5>
@@ -113,7 +113,7 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'pelanggan') {
 
   <!-- Logout tombol di kiri bawah -->
   <div class="logout-fixed">
-    <a href="../logout.php" class="logout-btn">
+    <a href="../auth/logout.php" class="logout-btn">
       <i class="bi bi-box-arrow-left me-2"></i>Logout
     </a>
   </div>

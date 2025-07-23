@@ -4,7 +4,7 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'pelanggan') {
   header("Location: ../login_pelanggan.php");
   exit;
 }
-require '../config/database.php';
+require '../../config/database.php';
 
 if (!isset($_GET['id_tagihan'])) {
   die("Tagihan tidak dipilih.");
@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "Tagihan tidak valid.";
     } else {
         $upload_ok = true;
-        $path_upload = __DIR__ . "/uploads/";
+        $path_upload = $_SERVER['DOCUMENT_ROOT'] . "/pembayaran-listrik/uploads/";
         if (!is_dir($path_upload)) {
             mkdir($path_upload, 0775, true);
         }
@@ -119,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <h3>Konfirmasi Pembayaran</h3>
     <div>
       <a href="pembayaran.php" class="btn btn-outline-secondary btn-sm">← Kembali</a>
-      <a href="dashboard.php" class="btn btn-outline-primary btn-sm">Dashboard</a>
+      <a href="../dashboard.php" class="btn btn-outline-primary btn-sm">Dashboard</a>
     </div>
   </div>
 
