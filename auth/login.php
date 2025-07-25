@@ -10,38 +10,49 @@ if (isset($_POST['login'])) {
   $username = $_POST['username']; // [Data] Ambil input username dari form
   $password = $_POST['password']; // [Data] Ambil input password dari form
 
-  // [Proses] Coba cari user di tabel admin terlebih dahulu
-  $adminQ = $conn->query("SELECT * FROM user WHERE username='$username' AND password='$password'");
-  // [Query SQL] Mencocokkan username dan password pada tabel user (admin)
+  // [Proses] Coba cari user di tabel admin terlebih dahulu berdasarkan username
+  $adminQ = $conn->query("SELECT * FROM user WHERE username='$username'");
+  // [Query SQL] Cari berdasarkan username saja di tabel user (admin)
 
   if ($adminQ->num_rows > 0) {
     // [Logika] Jika ditemukan data admin
     $admin = $adminQ->fetch_assoc(); // [Data] Ambil data admin yang cocok
-    $_SESSION['login'] = true; // [Session] Tandai bahwa user sudah login
-    $_SESSION['role'] = 'admin'; // [Session] Simpan role sebagai admin
-    $_SESSION['nama'] = $admin['nama_admin']; // [Session] Simpan nama admin
-    header("Location: ../admin/dashboard.php"); // [Prosedur] Redirect ke dashboard admin
-    exit; // [Kontrol] Hentikan script setelah redirect
+    if ($admin['password'] === $password) {
+      // [Validasi] Jika password cocok
+      $_SESSION['login'] = true; // [Session] Tandai bahwa user sudah login
+      $_SESSION['role'] = 'admin'; // [Session] Simpan role sebagai admin
+      $_SESSION['nama'] = $admin['nama_admin']; // [Session] Simpan nama admin
+      header("Location: ../admin/dashboard.php"); // [Prosedur] Redirect ke dashboard admin
+      exit; // [Kontrol] Hentikan script setelah redirect
+    } else {
+      $error = "Password salah."; 
+      // [Feedback] Jika password tidak cocok
+    }
+  } else {
+    // [Proses] Jika bukan admin, cek username di tabel pelanggan
+    $pelangganQ = $conn->query("SELECT * FROM pelanggan WHERE username='$username'");
+    // [Query SQL] Cari berdasarkan username di tabel pelanggan
+
+    if ($pelangganQ->num_rows > 0) {
+      // [Logika] Jika ditemukan user pelanggan
+      $user = $pelangganQ->fetch_assoc(); // [Data] Ambil data pelanggan
+      if ($user['password'] === $password) {
+        // [Validasi] Jika password cocok
+        $_SESSION['login'] = true; // [Session] Tandai login berhasil
+        $_SESSION['role'] = 'pelanggan'; // [Session] Simpan role sebagai pelanggan
+        $_SESSION['nama'] = $user['nama_pelanggan']; // [Session] Simpan nama pelanggan
+        $_SESSION['id_pelanggan'] = $user['id_pelanggan']; // [Session] Simpan ID pelanggan
+        header("Location: ../pelanggan/dashboard.php"); // [Prosedur] Redirect ke dashboard pelanggan
+        exit; // [Kontrol] Hentikan script setelah redirect
+      } else {
+        $error = "Password salah."; 
+        // [Feedback] Jika password tidak cocok
+      }
+    } else {
+      $error = "Akun tidak ditemukan."; 
+      // [Feedback] Jika username tidak ada di kedua tabel
+    }
   }
-
-  // [Proses] Jika bukan admin, cek di tabel pelanggan
-  $pelangganQ = $conn->query("SELECT * FROM pelanggan WHERE username='$username' AND password='$password'");
-  // [Query SQL] Cek kecocokan username dan password di tabel pelanggan
-
-  if ($pelangganQ->num_rows > 0) {
-    // [Logika] Jika ditemukan user pelanggan
-    $user = $pelangganQ->fetch_assoc(); // [Data] Ambil data pelanggan
-    $_SESSION['login'] = true; // [Session] Tandai login berhasil
-    $_SESSION['role'] = 'pelanggan'; // [Session] Simpan role sebagai pelanggan
-    $_SESSION['nama'] = $user['nama_pelanggan']; // [Session] Simpan nama pelanggan
-    $_SESSION['id_pelanggan'] = $user['id_pelanggan']; // [Session] Simpan ID pelanggan
-    header("Location: ../pelanggan/dashboard.php"); // [Prosedur] Redirect ke dashboard pelanggan
-    exit;
-  }
-
-  // [Validasi] Jika tidak ditemukan di admin maupun pelanggan
-  $error = "Login gagal. Periksa kembali username dan password."; 
-  // [Feedback] Simpan pesan error untuk ditampilkan ke user
 }
 ?>
 <!DOCTYPE html>

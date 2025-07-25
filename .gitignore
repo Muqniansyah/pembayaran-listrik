@@ -1,0 +1,15 @@
+# Custom directories you want to ignore
+.phpdoc/         
+docs/            
+*.zip
+*.tar.gz
+
+# Node/NPM 
+node_modules/
+package-lock.json
+
+# Composer dependencies
+/vendor/
+
+# PHPUnit result cache
+.phpunit.result.cache

@@ -39,11 +39,27 @@ CREATE TABLE IF NOT EXISTS `pelanggan` (
   UNIQUE KEY `nomor_kwh` (`nomor_kwh`),
   KEY `id_tarif` (`id_tarif`),
   CONSTRAINT `pelanggan_ibfk_1` FOREIGN KEY (`id_tarif`) REFERENCES `tarif` (`id_tarif`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table db_listrik.pelanggan: ~0 rows (approximately)
+-- Dumping data for table db_listrik.pelanggan: ~2 rows (approximately)
 INSERT INTO `pelanggan` (`id_pelanggan`, `username`, `password`, `nomor_kwh`, `nama_pelanggan`, `alamat`, `id_tarif`) VALUES
-	(3, 'muni', 'muniganteng', '234532', 'Muqniansyah Arifin', 'jalan bahagia', 7);
+	(4, 'muni', 'muniganteng', '123423', 'muqniansyah', 'jalan bahagia', 7),
+	(5, 'anton', 'anton123', '4562342', 'antonia simatupang', 'pomdok kelapa', 7);
+
+-- Dumping structure for procedure db_listrik.pelanggan_daya_900
+DELIMITER //
+CREATE PROCEDURE `pelanggan_daya_900`()
+BEGIN
+  SELECT 
+    pel.id_pelanggan,
+    pel.nama_pelanggan,
+    pel.nomor_kwh,
+    t.daya
+  FROM pelanggan pel
+  JOIN tarif t ON pel.id_tarif = t.id_tarif
+  WHERE t.daya = '900';
+END//
+DELIMITER ;
 
 -- Dumping structure for table db_listrik.pembayaran
 CREATE TABLE IF NOT EXISTS `pembayaran` (
@@ -65,11 +81,15 @@ CREATE TABLE IF NOT EXISTS `pembayaran` (
   CONSTRAINT `pembayaran_ibfk_1` FOREIGN KEY (`id_tagihan`) REFERENCES `tagihan` (`id_tagihan`),
   CONSTRAINT `pembayaran_ibfk_2` FOREIGN KEY (`id_tarif`) REFERENCES `tarif` (`id_tarif`),
   CONSTRAINT `pembayaran_ibfk_3` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table db_listrik.pembayaran: ~0 rows (approximately)
+-- Dumping data for table db_listrik.pembayaran: ~4 rows (approximately)
 INSERT INTO `pembayaran` (`id_pembayaran`, `id_tagihan`, `id_tarif`, `tanggal_pembayaran`, `bulan_bayar`, `tahun_bayar`, `biaya_admin`, `total_bayar`, `id_user`, `bukti_bayar`, `status_bayar`) VALUES
-	(8, 6, NULL, '2025-07-20', '0', NULL, NULL, 12100000.00, NULL, 'bukti_6_1753018686.jpg', 'sudah diverifikasi');
+	(10, 10, NULL, '2025-07-21', '0', NULL, NULL, 670340.00, NULL, 'bukti_10_1753107412.png', 'menunggu verifikasi'),
+	(11, 9, NULL, '2025-07-21', '0', NULL, NULL, 6050.00, NULL, 'bukti_9_1753107572.png', 'sudah diverifikasi'),
+	(12, 11, NULL, '2025-07-21', '0', NULL, NULL, -6703400.00, NULL, 'bukti_11_1753107769.png', 'menunggu verifikasi'),
+	(13, 12, NULL, '2025-07-21', '0', NULL, NULL, 1471360.00, NULL, 'bukti_12_1753107947.png', 'menunggu verifikasi'),
+	(14, 13, NULL, '2025-07-24', '0', NULL, NULL, 739599190.00, NULL, 'bukti_13_1753323976.png', 'menunggu verifikasi');
 
 -- Dumping structure for table db_listrik.penggunaan
 CREATE TABLE IF NOT EXISTS `penggunaan` (
@@ -81,12 +101,17 @@ CREATE TABLE IF NOT EXISTS `penggunaan` (
   `meter_akhir` int DEFAULT NULL,
   PRIMARY KEY (`id_penggunaan`),
   KEY `id_pelanggan` (`id_pelanggan`),
+  KEY `idx_penggunaan_pelanggan` (`id_pelanggan`),
   CONSTRAINT `penggunaan_ibfk_1` FOREIGN KEY (`id_pelanggan`) REFERENCES `pelanggan` (`id_pelanggan`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table db_listrik.penggunaan: ~0 rows (approximately)
+-- Dumping data for table db_listrik.penggunaan: ~5 rows (approximately)
 INSERT INTO `penggunaan` (`id_penggunaan`, `id_pelanggan`, `bulan`, `tahun`, `meter_awal`, `meter_akhir`) VALUES
-	(6, 3, 'januari', '2012', 1232, 21232);
+	(9, 4, 'januari', '2012', 12312, 12322),
+	(10, 4, 'april', '2010', 1234, 2342),
+	(11, 4, 'maret', '2019', 12312, 1232),
+	(12, 4, 'februari', '2012', 3243, 5675),
+	(13, 5, 'februari', '2025', 12034, 1234512);
 
 -- Dumping structure for table db_listrik.tagihan
 CREATE TABLE IF NOT EXISTS `tagihan` (
@@ -102,11 +127,15 @@ CREATE TABLE IF NOT EXISTS `tagihan` (
   KEY `id_pelanggan` (`id_pelanggan`),
   CONSTRAINT `tagihan_ibfk_1` FOREIGN KEY (`id_penggunaan`) REFERENCES `penggunaan` (`id_penggunaan`),
   CONSTRAINT `tagihan_ibfk_2` FOREIGN KEY (`id_pelanggan`) REFERENCES `pelanggan` (`id_pelanggan`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table db_listrik.tagihan: ~0 rows (approximately)
+-- Dumping data for table db_listrik.tagihan: ~5 rows (approximately)
 INSERT INTO `tagihan` (`id_tagihan`, `id_penggunaan`, `id_pelanggan`, `bulan`, `tahun`, `jumlah_meter`, `status`) VALUES
-	(6, 6, 3, 'januari', '2012', 20000, 'sudah dibayar');
+	(9, 9, 4, 'januari', '2012', 10, 'sudah dibayar'),
+	(10, 10, 4, 'april', '2010', 1108, 'menunggu verifikasi'),
+	(11, 11, 4, 'maret', '2019', -11080, 'menunggu verifikasi'),
+	(12, 12, 4, 'februari', '2012', 2432, 'menunggu verifikasi'),
+	(13, 13, 5, 'februari', '2025', 1222478, 'menunggu verifikasi');
 
 -- Dumping structure for table db_listrik.tarif
 CREATE TABLE IF NOT EXISTS `tarif` (
@@ -114,14 +143,36 @@ CREATE TABLE IF NOT EXISTS `tarif` (
   `daya` varchar(20) DEFAULT NULL,
   `tarifperkwh` decimal(10,2) DEFAULT NULL,
   PRIMARY KEY (`id_tarif`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table db_listrik.tarif: ~0 rows (approximately)
+-- Dumping data for table db_listrik.tarif: ~5 rows (approximately)
 INSERT INTO `tarif` (`id_tarif`, `daya`, `tarifperkwh`) VALUES
 	(6, '450', 415.00),
-	(7, '900', 605.00),
+	(7, '900', 900.00),
 	(8, '1300', 1478.00),
-	(9, '2200', 1467.00);
+	(9, '2200', 1467.00),
+	(11, '4500', 1675.00);
+
+-- Dumping structure for function db_listrik.total_penggunaan_bulanan
+DELIMITER //
+CREATE FUNCTION `total_penggunaan_bulanan`(
+  pid_pelanggan INT,
+  pbulan VARCHAR(20),
+  ptahun INT
+) RETURNS int
+    DETERMINISTIC
+BEGIN
+  DECLARE total INT;
+
+  SELECT SUM(meter_akhir - meter_awal) INTO total
+  FROM penggunaan
+  WHERE id_pelanggan = pid_pelanggan
+    AND bulan = pbulan
+    AND tahun = ptahun;
+
+  RETURN IFNULL(total, 0);
+END//
+DELIMITER ;
 
 -- Dumping structure for table db_listrik.user
 CREATE TABLE IF NOT EXISTS `user` (
@@ -135,9 +186,27 @@ CREATE TABLE IF NOT EXISTS `user` (
   CONSTRAINT `user_ibfk_1` FOREIGN KEY (`id_level`) REFERENCES `level` (`id_level`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table db_listrik.user: ~1 rows (approximately)
+-- Dumping data for table db_listrik.user: ~0 rows (approximately)
 INSERT INTO `user` (`id_user`, `username`, `password`, `nama_admin`, `id_level`) VALUES
 	(1, 'admin', 'admin123', NULL, NULL);
+
+-- Dumping structure for view db_listrik.v_penggunaan_listrik
+-- Creating temporary table to overcome VIEW dependency errors
+CREATE TABLE `v_penggunaan_listrik` (
+	`id_penggunaan` INT(10) NOT NULL,
+	`nama_pelanggan` VARCHAR(100) NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`nomor_kwh` VARCHAR(20) NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`bulan` VARCHAR(20) NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`tahun` YEAR NULL,
+	`meter_awal` INT(10) NULL,
+	`meter_akhir` INT(10) NULL,
+	`jumlah_meter` BIGINT(19) NULL
+) ENGINE=MyISAM;
+
+-- Dumping structure for view db_listrik.v_penggunaan_listrik
+-- Removing temporary table and create final VIEW structure
+DROP TABLE IF EXISTS `v_penggunaan_listrik`;
+CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `v_penggunaan_listrik` AS select `p`.`id_penggunaan` AS `id_penggunaan`,`pel`.`nama_pelanggan` AS `nama_pelanggan`,`pel`.`nomor_kwh` AS `nomor_kwh`,`p`.`bulan` AS `bulan`,`p`.`tahun` AS `tahun`,`p`.`meter_awal` AS `meter_awal`,`p`.`meter_akhir` AS `meter_akhir`,(`p`.`meter_akhir` - `p`.`meter_awal`) AS `jumlah_meter` from (`penggunaan` `p` join `pelanggan` `pel` on((`p`.`id_pelanggan` = `pel`.`id_pelanggan`)));
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

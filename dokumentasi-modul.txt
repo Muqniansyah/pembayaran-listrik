@@ -1,0 +1,103 @@
+==================================================
+DOKUMENTASI MODUL PROGRAM - PEMBAYARAN LISTRIK
+==================================================
+
+Nama Proyek         : PEMBAYARAN LISTRIK
+Penyusun            : Muqniansyah Arifin
+Tanggal dibuat      : 29/07/2025
+Tanggal REVISI      : 29/07/2025
+Versi               : 1.0.1
+
+
+--------------------------------------------------
+TUJUAN DOKUMENTASI
+--------------------------------------------------
+Dokumentasi ini dibuat untuk mengidentifikasi dan menjelaskan fungsi masing-masing modul 
+dalam aplikasi pembayaran listrik agar mempermudah pelacakan, pemeliharaan, dan pengembangan.
+
+--------------------------------------------------
+STRUKTUR FOLDER & IDENTIFIKASI MODUL
+--------------------------------------------------
+
+1. Folder: /admin
+   Deskripsi:
+   Modul untuk admin dalam mengelola data pelanggan, data tagihan, tarif listrik, dan laporan pembayaran.
+
+2. Folder: /auth
+   Deskripsi:
+   Modul untuk proses login dan logout pengguna (admin maupun pelanggan).
+
+3. Folder: /pelanggan
+   Deskripsi:
+   Modul untuk pelanggan. Digunakan untuk melihat tagihan, upload bukti bayar, dan informasi akun.
+
+4. Folder: /config
+   Deskripsi:
+   Berisi konfigurasi koneksi ke database dan pengaturan global aplikasi.
+
+5. Folder: /uploads
+   Deskripsi:
+   Direktori penyimpanan file bukti pembayaran yang diunggah pelanggan.
+
+6. Folder: /assets
+   Deskripsi:
+   Berisi file pendukung seperti CSS, JavaScript, dan gambar.
+
+7. Folder: /sql
+   Deskripsi:
+   Berisi file SQL untuk inisialisasi database aplikasi.
+
+--------------------------------------------------
+DETAIL MODUL
+--------------------------------------------------
+
+Nama File : index.php
+Deskripsi : Landing page aplikasi, berisi informasi umum dan tombol masuk.
+Input     : -
+Output    : Halaman awal sistem
+Catatan   : Ditambahkan icon listrik dan tombol login
+
+Nama File : auth/login.php
+Deskripsi : Menangani proses login pengguna
+Input     : Username dan password
+Output    : Redirect ke dashboard sesuai peran pengguna
+Catatan   : Telah diperbarui dengan pengecekan role admin/pelanggan
+
+Nama File : auth/logout.php
+Deskripsi : Menangani proses logout pengguna
+Input     : Session aktif
+Output    : Session dihancurkan dan redirect ke halaman login
+Catatan   : Logout akan menghapus semua session login
+
+Nama File : admin/dashboard.php
+Deskripsi : Dashboard utama untuk admin, menampilkan statistik data tagihan
+Input     : Session admin
+Output    : Tampilan data dinamis (jumlah pelanggan, total tagihan, dsb)
+Catatan   : Memerlukan koneksi ke database
+
+Nama File : pelanggan/tagihan.php
+Deskripsi : Menampilkan daftar tagihan untuk pelanggan
+Input     : ID pelanggan (dari session)
+Output    : Tabel tagihan yang belum/lunas
+Catatan   : Menggunakan query SELECT ke tabel tagihan
+
+Nama Folder: uploads/
+Deskripsi: Menyimpan file gambar bukti bayar yang diupload oleh pelanggan
+Perubahan: Path upload sudah disesuaikan dengan direktori root proyek
+
+--------------------------------------------------
+CATATAN PERUBAHAN (REVISI)
+--------------------------------------------------
+
+- File login.php: Ditambahkan validasi peran user
+- Path upload file disesuaikan ke folder root /uploads
+
+--------------------------------------------------
+KESIMPULAN
+--------------------------------------------------
+Dokumentasi ini mempermudah pelacakan dan pemahaman alur kerja sistem.
+Setiap modul memiliki fungsi yang spesifik dan mendukung proses pembayaran listrik.
+
+Pastikan dokumentasi ini diperbarui setiap ada perubahan struktur kode program.
+
+==================================================

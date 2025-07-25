@@ -10,6 +10,12 @@ $tagihan = $conn->query("
   JOIN tarif tr ON p.id_tarif = tr.id_tarif
   WHERE t.id_pelanggan = '$id_pelanggan'
 ");
+
+// Debug: tampilkan isi hasil query
+// echo "<pre>";
+// print_r($tagihan->fetch_all(MYSQLI_ASSOC)); // atau gunakan var_dump jika ingin lebih detail
+// echo "</pre>";
+// exit;
 ?>
 
 <!DOCTYPE html>

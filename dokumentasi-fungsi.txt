@@ -1,0 +1,69 @@
+====================================================================
+DOKUMENTASI FUNGSI / PROSEDUR / METHOD
+File       : pelanggan/penggunaan/penggunaan.php
+Deskripsi  : Modul ini digunakan pelanggan untuk mencatat, mengedit,
+             dan menghapus data penggunaan listrik bulanan.
+====================================================================
+
+1. Nama Fungsi : hapusPenggunaan()
+   Lokasi      : Line 10
+   Deskripsi   : Menghapus data penggunaan dan tagihan berdasarkan ID
+   Parameter   : 
+     - $conn (koneksi database)
+     - $id (ID penggunaan)
+     - $id_pelanggan (ID pelanggan dari session)
+   Output      : Data penggunaan dan tagihan terhapus dari database
+   Catatan     : Juga menghapus tagihan yang terhubung dengan penggunaan
+
+2. Nama Fungsi : updatePenggunaan()
+   Lokasi      : Line 15
+   Deskripsi   : Memperbarui data penggunaan dan menghitung ulang jumlah meter
+   Parameter   :
+     - $conn, $id, $id_pelanggan
+     - $bulan, $tahun, $meter_awal, $meter_akhir
+   Output      : Data penggunaan diperbarui, dan jumlah_meter tagihan dihitung ulang
+   Catatan     : Update dilakukan berdasarkan ID penggunaan dan ID pelanggan
+
+3. Nama Fungsi : tambahPenggunaan()
+   Lokasi      : Line 22
+   Deskripsi   : Menambahkan data penggunaan dan otomatis membuat data tagihan
+   Parameter   :
+     - $conn, $id_pelanggan, $bulan, $tahun, $meter_awal, $meter_akhir
+   Output      : Data penggunaan dan tagihan baru ditambahkan
+   Catatan     : Status tagihan diset "belum dibayar"
+
+====================================================================
+KEMUNGKINAN EKSEPSI / ERROR HANDLING
+====================================================================
+
+1. Tidak ada session aktif (misalnya id_pelanggan kosong)
+   - Sistem dapat menampilkan error atau mengakses data yang salah
+   - Solusi: Tambahkan validasi session di awal
+
+2. Input meter akhir < meter awal
+   - Jumlah meter akan bernilai negatif
+   - Solusi: Validasi angka sebelum menyimpan data
+
+3. Akses URL langsung dengan parameter edit/hapus yang tidak sah
+   - Bisa menyebabkan error SQL atau data salah ditampilkan
+   - Solusi: Validasi kepemilikan ID oleh session pengguna
+
+4. Duplikasi penggunaan di bulan dan tahun yang sama
+   - Data bisa tidak konsisten jika tidak dicegah
+   - Solusi: Tambahkan validasi sebelum insert
+
+====================================================================
+REVISI DOKUMEN SESUAI PERUBAHAN
+====================================================================
+
+Tanggal Revisi : 24 Juli 2025
+Perubahan:
+- Fungsi ditambahkan komentar dan dokumentasi internal
+- Penanganan session id_pelanggan dipastikan aktif di awal
+- Penambahan style Bootstrap 5 dan ikon dari Bootstrap Icons
+- Penyesuaian UI form untuk edit dan tambah dalam satu form
+
+Catatan:
+- Perlu ditambahkan validasi frontend/backend untuk mencegah
+  input tidak logis seperti meter akhir < meter awal
+

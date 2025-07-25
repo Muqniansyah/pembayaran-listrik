@@ -1,51 +1,60 @@
 <?php
 session_start();
 include '../../config/database.php';
+
 $id_pelanggan = $_SESSION['id_pelanggan'];
 
-// Hapus data
-if (isset($_GET['hapus'])) {
-  $id = $_GET['hapus'];
-  // Hapus tagihan terlebih dahulu agar tidak kena FK error
+// Inisialisasi variabel edit
+$edit = false;
+
+// Fungsi hapus data penggunaan dan tagihan terkait
+function hapusPenggunaan($conn, $id, $id_pelanggan) {
   $conn->query("DELETE FROM tagihan WHERE id_penggunaan='$id'");
   $conn->query("DELETE FROM penggunaan WHERE id_penggunaan='$id' AND id_pelanggan='$id_pelanggan'");
-  header("Location: penggunaan.php");
-  exit;
 }
 
-// Edit data
-if (isset($_POST['update'])) {
-  $id = $_POST['id_penggunaan'];
-  $bulan = $_POST['bulan'];
-  $tahun = $_POST['tahun'];
-  $meter_awal = $_POST['meter_awal'];
-  $meter_akhir = $_POST['meter_akhir'];
-
+// Fungsi update data penggunaan dan tagihan
+function updatePenggunaan($conn, $id, $id_pelanggan, $bulan, $tahun, $meter_awal, $meter_akhir) {
   $conn->query("UPDATE penggunaan SET bulan='$bulan', tahun='$tahun', meter_awal='$meter_awal', meter_akhir='$meter_akhir' WHERE id_penggunaan='$id' AND id_pelanggan='$id_pelanggan'");
   $jumlah_meter = $meter_akhir - $meter_awal;
   $conn->query("UPDATE tagihan SET jumlah_meter='$jumlah_meter' WHERE id_penggunaan='$id'");
-
-  header("Location: penggunaan.php");
-  exit;
 }
 
-// Tambah data penggunaan
-if (isset($_POST['tambah'])) {
-  $bulan = $_POST['bulan'];
-  $tahun = $_POST['tahun'];
-  $meter_awal = $_POST['meter_awal'];
-  $meter_akhir = $_POST['meter_akhir'];
-
+// Fungsi tambah data penggunaan dan tagihan
+function tambahPenggunaan($conn, $id_pelanggan, $bulan, $tahun, $meter_awal, $meter_akhir) {
   $conn->query("INSERT INTO penggunaan (id_pelanggan, bulan, tahun, meter_awal, meter_akhir) VALUES ('$id_pelanggan', '$bulan', '$tahun', '$meter_awal', '$meter_akhir')");
-
   $id_penggunaan = $conn->insert_id;
   $jumlah_meter = $meter_akhir - $meter_awal;
   $conn->query("INSERT INTO tagihan (id_penggunaan, id_pelanggan, bulan, tahun, jumlah_meter, status) VALUES ('$id_penggunaan', '$id_pelanggan', '$bulan', '$tahun', '$jumlah_meter', 'belum dibayar')");
 }
 
+// Proses hapus
+if (isset($_GET['hapus'])) {
+  $id = $_GET['hapus'];
+  hapusPenggunaan($conn, $id, $id_pelanggan);
+  header("Location: penggunaan.php");
+  exit;
+}
+
+// Proses update
+if (isset($_POST['update'])) {
+  $id = $_POST['id_penggunaan'];
+  updatePenggunaan($conn, $id, $id_pelanggan, $_POST['bulan'], $_POST['tahun'], $_POST['meter_awal'], $_POST['meter_akhir']);
+  header("Location: penggunaan.php");
+  exit;
+}
+
+// Proses tambah
+if (isset($_POST['tambah'])) {
+  tambahPenggunaan($conn, $id_pelanggan, $_POST['bulan'], $_POST['tahun'], $_POST['meter_awal'], $_POST['meter_akhir']);
+  header("Location: penggunaan.php");
+  exit;
+}
+
+// Ambil data penggunaan
 $penggunaan = $conn->query("SELECT * FROM penggunaan WHERE id_pelanggan='$id_pelanggan'");
 
-$edit = false;
+// Cek jika edit
 if (isset($_GET['edit'])) {
   $edit = true;
   $id_edit = $_GET['edit'];

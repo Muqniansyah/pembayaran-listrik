@@ -45,7 +45,7 @@
 <body>
 
   <div class="hero">
-    <img src="https://cdn-icons-png.flaticon.com/512/1046/1046857.png" class="illustration" alt="Listrik">
+    <img src="./assets/img/electricity-icon.svg" alt="listrik" width="200">
     <h1>Pembayaran Listrik Pascabayar</h1>
     <p>Sistem manajemen pembayaran listrik yang memudahkan pelanggan untuk melihat tagihan, melakukan pembayaran, dan mengelola penggunaan listrik secara online.</p>
     <a href="auth/login.php" class="btn btn-primary">Masuk</a>
