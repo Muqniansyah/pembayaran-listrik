@@ -26,20 +26,6 @@ INSERT INTO `level` (`id_level`, `nama_level`) VALUES
 	(1, 'admin'),
 	(2, 'pelanggan');
 
--- Dumping structure for table db_listrik.log_pembayaran
-CREATE TABLE IF NOT EXISTS `log_pembayaran` (
-  `id_log` int NOT NULL AUTO_INCREMENT,
-  `id_tagihan` int DEFAULT NULL,
-  `status_baru` enum('belum dibayar','sudah dibayar','menunggu verifikasi') DEFAULT NULL,
-  `waktu_update` datetime DEFAULT NULL,
-  PRIMARY KEY (`id_log`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- Dumping data for table db_listrik.log_pembayaran: ~2 rows (approximately)
-INSERT INTO `log_pembayaran` (`id_log`, `id_tagihan`, `status_baru`, `waktu_update`) VALUES
-	(1, 15, 'sudah dibayar', '2025-07-26 17:51:40'),
-	(2, 10, 'sudah dibayar', '2025-07-26 17:54:37');
-
 -- Dumping structure for table db_listrik.pelanggan
 CREATE TABLE IF NOT EXISTS `pelanggan` (
   `id_pelanggan` int NOT NULL AUTO_INCREMENT,
@@ -56,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `pelanggan` (
   CONSTRAINT `pelanggan_ibfk_1` FOREIGN KEY (`id_tarif`) REFERENCES `tarif` (`id_tarif`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table db_listrik.pelanggan: ~0 rows (approximately)
+-- Dumping data for table db_listrik.pelanggan: ~4 rows (approximately)
 INSERT INTO `pelanggan` (`id_pelanggan`, `username`, `password`, `nomor_kwh`, `nama_pelanggan`, `alamat`, `id_tarif`, `id_level`) VALUES
 	(4, 'muni', 'muniganteng', '123423', 'muqniansyah', 'jalan bahagia', 7, 2),
 	(5, 'anton', 'anton123', '4562342', 'antonia simatupang', 'pomdok kelapa', 7, 2),
@@ -98,16 +84,15 @@ CREATE TABLE IF NOT EXISTS `pembayaran` (
   CONSTRAINT `pembayaran_ibfk_1` FOREIGN KEY (`id_tagihan`) REFERENCES `tagihan` (`id_tagihan`),
   CONSTRAINT `pembayaran_ibfk_2` FOREIGN KEY (`id_tarif`) REFERENCES `tarif` (`id_tarif`),
   CONSTRAINT `pembayaran_ibfk_3` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table db_listrik.pembayaran: ~3 rows (approximately)
+-- Dumping data for table db_listrik.pembayaran: ~5 rows (approximately)
 INSERT INTO `pembayaran` (`id_pembayaran`, `id_tagihan`, `id_tarif`, `tanggal_pembayaran`, `bulan_bayar`, `tahun_bayar`, `biaya_admin`, `total_bayar`, `id_user`, `bukti_bayar`, `status_bayar`) VALUES
 	(10, 10, NULL, '2025-07-21', '0', NULL, NULL, 670340.00, NULL, 'bukti_10_1753107412.png', 'menunggu verifikasi'),
 	(11, 9, NULL, '2025-07-21', '0', NULL, NULL, 6050.00, NULL, 'bukti_9_1753107572.png', 'sudah diverifikasi'),
 	(12, 11, NULL, '2025-07-21', '0', NULL, NULL, -6703400.00, NULL, 'bukti_11_1753107769.png', 'menunggu verifikasi'),
 	(13, 12, NULL, '2025-07-21', '0', NULL, NULL, 1471360.00, NULL, 'bukti_12_1753107947.png', 'menunggu verifikasi'),
-	(14, 13, NULL, '2025-07-24', '0', NULL, NULL, 739599190.00, NULL, 'bukti_13_1753323976.png', 'menunggu verifikasi'),
-	(15, 15, NULL, '2025-07-26', '0', NULL, NULL, 45000.00, NULL, 'bukti_15_1753527081.png', 'sudah diverifikasi');
+	(14, 13, NULL, '2025-07-24', '0', NULL, NULL, 739599190.00, NULL, 'bukti_13_1753323976.png', 'menunggu verifikasi');
 
 -- Dumping structure for table db_listrik.penggunaan
 CREATE TABLE IF NOT EXISTS `penggunaan` (
@@ -123,7 +108,7 @@ CREATE TABLE IF NOT EXISTS `penggunaan` (
   CONSTRAINT `penggunaan_ibfk_1` FOREIGN KEY (`id_pelanggan`) REFERENCES `pelanggan` (`id_pelanggan`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table db_listrik.penggunaan: ~8 rows (approximately)
+-- Dumping data for table db_listrik.penggunaan: ~7 rows (approximately)
 INSERT INTO `penggunaan` (`id_penggunaan`, `id_pelanggan`, `bulan`, `tahun`, `meter_awal`, `meter_akhir`) VALUES
 	(9, 4, 'januari', '2012', 12312, 12322),
 	(10, 4, 'april', '2010', 1234, 2342),
@@ -152,11 +137,11 @@ CREATE TABLE IF NOT EXISTS `tagihan` (
 -- Dumping data for table db_listrik.tagihan: ~7 rows (approximately)
 INSERT INTO `tagihan` (`id_tagihan`, `id_penggunaan`, `id_pelanggan`, `bulan`, `tahun`, `jumlah_meter`, `status`) VALUES
 	(9, 9, 4, 'januari', '2012', 10, 'sudah dibayar'),
-	(10, 10, 4, 'april', '2010', 1108, 'sudah dibayar'),
+	(10, 10, 4, 'april', '2010', 1108, 'menunggu verifikasi'),
 	(11, 11, 4, 'maret', '2019', -11080, 'menunggu verifikasi'),
 	(12, 12, 4, 'februari', '2012', 2432, 'menunggu verifikasi'),
 	(13, 13, 5, 'februari', '2025', 1222478, 'menunggu verifikasi'),
-	(15, 17, 4, 'Juli', '2025', 50, 'sudah dibayar'),
+	(15, 17, 4, 'Juli', '2025', 50, 'belum dibayar'),
 	(17, 19, 4, 'Juli', '2025', 50, 'belum dibayar');
 
 -- Dumping structure for table db_listrik.tarif
@@ -167,7 +152,7 @@ CREATE TABLE IF NOT EXISTS `tarif` (
   PRIMARY KEY (`id_tarif`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table db_listrik.tarif: ~4 rows (approximately)
+-- Dumping data for table db_listrik.tarif: ~5 rows (approximately)
 INSERT INTO `tarif` (`id_tarif`, `daya`, `tarifperkwh`) VALUES
 	(6, '450', 415.00),
 	(7, '900', 900.00),
@@ -208,7 +193,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   CONSTRAINT `user_ibfk_1` FOREIGN KEY (`id_level`) REFERENCES `level` (`id_level`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table db_listrik.user: ~0 rows (approximately)
+-- Dumping data for table db_listrik.user: ~1 rows (approximately)
 INSERT INTO `user` (`id_user`, `username`, `password`, `nama_admin`, `id_level`) VALUES
 	(1, 'admin', 'admin123', NULL, 1);
 
@@ -224,19 +209,6 @@ CREATE TABLE `v_penggunaan_listrik` (
 	`meter_akhir` INT(10) NULL,
 	`jumlah_meter` BIGINT(19) NULL
 ) ENGINE=MyISAM;
-
--- Dumping structure for trigger db_listrik.after_update_tagihan
-SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
-DELIMITER //
-CREATE TRIGGER `after_update_tagihan` AFTER UPDATE ON `tagihan` FOR EACH ROW BEGIN
-  -- Cek apakah status berubah dan menjadi 'sudah dibayar'
-  IF NEW.status = 'sudah dibayar' AND OLD.status <> 'sudah dibayar' THEN
-    INSERT INTO log_pembayaran (id_tagihan, status_baru, waktu_update)
-    VALUES (NEW.id_tagihan, NEW.status, NOW());
-  END IF;
-END//
-DELIMITER ;
-SET SQL_MODE=@OLDTMP_SQL_MODE;
 
 -- Dumping structure for view db_listrik.v_penggunaan_listrik
 -- Removing temporary table and create final VIEW structure

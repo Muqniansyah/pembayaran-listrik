@@ -1,9 +1,10 @@
 <?php
 session_start();
-if (!isset($_SESSION['login']) || $_SESSION['role'] != 'pelanggan') {
-  header("Location: ../login_pelanggan.php");
+if (!isset($_SESSION['login']) || $_SESSION['level'] !== 'pelanggan') {
+  header("Location: ../auth/login.php");
   exit;
 }
+
 require '../../config/database.php';
 
 if (!isset($_GET['id_tagihan'])) {
