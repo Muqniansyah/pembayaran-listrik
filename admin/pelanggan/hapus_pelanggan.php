@@ -26,7 +26,13 @@ while ($row = $penggunaan->fetch_assoc()) {
 }
 
 // 4. Hapus penggunaan yang terkait dengan pelanggan
-$conn->query("DELETE FROM penggunaan WHERE id_pelanggan = $id");
+// Sebelumnya
+// $conn->query("DELETE FROM penggunaan WHERE id_pelanggan = $id");
+
+// Best practice (menggunakan prepared statement untuk keamanan)
+$stmtHapusPenggunaan = $conn->prepare("DELETE FROM penggunaan WHERE id_pelanggan = ?");
+$stmtHapusPenggunaan->bind_param("i", $id);
+$stmtHapusPenggunaan->execute();
 
 // 5. Hapus data pelanggan
 $hapus = $conn->query("DELETE FROM pelanggan WHERE id_pelanggan = $id");

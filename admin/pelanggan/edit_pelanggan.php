@@ -7,11 +7,18 @@ if (!isset($_SESSION['login']) || $_SESSION['level'] !== 'admin') {
   exit;
 }
 
-$id = $_GET['id'] ?? 0;
+// Sebelumnya
+// $id = $_GET['id'] ?? 0;
+
+// Perbaikan sesuai guideline
+$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
 $query = $conn->query("SELECT * FROM pelanggan WHERE id_pelanggan = $id");
 $pelanggan = $query->fetch_assoc();
 
-$tarif = $conn->query("SELECT * FROM tarif");
+// Query ini tidak menggunakan prepared statement karena tidak ada parameter dari user input
+// dan hanya menampilkan semua data dari tabel tarif.
+$tarif = $conn->query("SELECT * FROM tarif"); 
 
 if (isset($_POST['simpan'])) {
   $nama = $_POST['nama'];
