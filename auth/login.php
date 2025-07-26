@@ -10,28 +10,41 @@ if (isset($_POST['login'])) {
   $username = $_POST['username']; // [Data] Ambil input username dari form
   $password = $_POST['password']; // [Data] Ambil input password dari form
 
-  // [Proses] Coba cari user di tabel admin terlebih dahulu berdasarkan username
-  $adminQ = $conn->query("SELECT * FROM user WHERE username='$username'");
-  // [Query SQL] Cari berdasarkan username saja di tabel user (admin)
+  // [Proses] Coba cari user di tabel admin terlebih dahulu berdasarkan username dan gabungkan dengan level
+  $userQ = $conn->query("SELECT u.*, l.nama_level FROM user u 
+                         LEFT JOIN level l ON u.id_level = l.id_level 
+                         WHERE u.username='$username'");
+  // [Query SQL] LEFT JOIN untuk mendapatkan level user dari tabel level berdasarkan id_level
 
-  if ($adminQ->num_rows > 0) {
+  if ($userQ->num_rows > 0) {
     // [Logika] Jika ditemukan data admin
-    $admin = $adminQ->fetch_assoc(); // [Data] Ambil data admin yang cocok
-    if ($admin['password'] === $password) {
+    $user = $userQ->fetch_assoc(); // [Data] Ambil data user yang cocok
+
+    if ($user['password'] === $password) {
       // [Validasi] Jika password cocok
       $_SESSION['login'] = true; // [Session] Tandai bahwa user sudah login
-      $_SESSION['role'] = 'admin'; // [Session] Simpan role sebagai admin
-      $_SESSION['nama'] = $admin['nama_admin']; // [Session] Simpan nama admin
-      header("Location: ../admin/dashboard.php"); // [Prosedur] Redirect ke dashboard admin
-      exit; // [Kontrol] Hentikan script setelah redirect
+      $_SESSION['level'] = $user['nama_level']; // [Session] Simpan level user dari tabel level
+      $_SESSION['nama'] = $user['nama_admin']; // [Session] Simpan nama admin
+      $_SESSION['id_user'] = $user['id_user']; // [Session] Simpan ID user
+
+      // [Prosedur] Redirect ke dashboard admin jika level adalah admin
+      if ($_SESSION['level'] === 'admin') {
+        header("Location: ../admin/dashboard.php");
+        exit; // [Kontrol] Hentikan script setelah redirect
+      } else {
+        header("Location: ../index.php"); // [Fallback] Jika level tidak dikenali
+        exit;
+      }
     } else {
       $error = "Password salah."; 
       // [Feedback] Jika password tidak cocok
     }
   } else {
-    // [Proses] Jika bukan admin, cek username di tabel pelanggan
-    $pelangganQ = $conn->query("SELECT * FROM pelanggan WHERE username='$username'");
-    // [Query SQL] Cari berdasarkan username di tabel pelanggan
+    // [Proses] Jika bukan admin, cek username di tabel pelanggan (join dengan level juga)
+    $pelangganQ = $conn->query("SELECT p.*, l.nama_level FROM pelanggan p
+                                LEFT JOIN level l ON p.id_level = l.id_level
+                                WHERE p.username='$username'");
+    // [Query SQL] Join dengan level untuk mendapatkan nama_level pelanggan
 
     if ($pelangganQ->num_rows > 0) {
       // [Logika] Jika ditemukan user pelanggan
@@ -39,11 +52,18 @@ if (isset($_POST['login'])) {
       if ($user['password'] === $password) {
         // [Validasi] Jika password cocok
         $_SESSION['login'] = true; // [Session] Tandai login berhasil
-        $_SESSION['role'] = 'pelanggan'; // [Session] Simpan role sebagai pelanggan
+        $_SESSION['level'] = $user['nama_level']; // [Session] Simpan level sebagai pelanggan
         $_SESSION['nama'] = $user['nama_pelanggan']; // [Session] Simpan nama pelanggan
         $_SESSION['id_pelanggan'] = $user['id_pelanggan']; // [Session] Simpan ID pelanggan
-        header("Location: ../pelanggan/dashboard.php"); // [Prosedur] Redirect ke dashboard pelanggan
-        exit; // [Kontrol] Hentikan script setelah redirect
+
+        // [Prosedur] Redirect ke dashboard pelanggan jika level = pelanggan
+        if ($_SESSION['level'] === 'pelanggan') {
+          header("Location: ../pelanggan/dashboard.php");
+          exit; // [Kontrol] Hentikan script setelah redirect
+        } else {
+          header("Location: ../index.php"); // [Fallback] Jika level tidak dikenali
+          exit;
+        }
       } else {
         $error = "Password salah."; 
         // [Feedback] Jika password tidak cocok
@@ -55,6 +75,7 @@ if (isset($_POST['login'])) {
   }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>

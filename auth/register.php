@@ -8,14 +8,15 @@ if (isset($_POST['register'])) {
   $alamat     = $_POST['alamat'];
   $nomor_kwh  = $_POST['nomor_kwh'];
   $id_tarif   = $_POST['id_tarif'];
+  $id_level   = 2; // Level 2 = Pelanggan
 
   // Cek apakah username atau nomor KWH sudah digunakan
   $cek = $conn->query("SELECT * FROM pelanggan WHERE username='$username' OR nomor_kwh='$nomor_kwh'");
   if ($cek->num_rows > 0) {
     $error = "Username atau Nomor KWH sudah terdaftar!";
   } else {
-    $sql = "INSERT INTO pelanggan (username, password, nomor_kwh, nama_pelanggan, alamat, id_tarif)
-            VALUES ('$username', '$password', '$nomor_kwh', '$nama', '$alamat', $id_tarif)";
+    $sql = "INSERT INTO pelanggan (username, password, nomor_kwh, nama_pelanggan, alamat, id_tarif, id_level)
+            VALUES ('$username', '$password', '$nomor_kwh', '$nama', '$alamat', $id_tarif, $id_level)";
     if ($conn->query($sql)) {
       $success = "Registrasi berhasil! Silakan login.";
     } else {

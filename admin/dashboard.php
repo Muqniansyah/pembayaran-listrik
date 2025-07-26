@@ -1,10 +1,11 @@
 <?php
 session_start();
-include '../config/database.php';
-if (!isset($_SESSION['login']) || $_SESSION['role'] != 'admin') {
-  header("Location: ../login_admin.php");
+if (!isset($_SESSION['login']) || $_SESSION['level'] !== 'admin') {
+  header("Location: ../auth/login.php");
   exit;
 }
+
+include '../config/database.php';
 
 $total_pelanggan = $conn->query("SELECT COUNT(*) AS total FROM pelanggan")->fetch_assoc()['total'];
 $total_tagihan = $conn->query("SELECT COUNT(*) AS total FROM tagihan")->fetch_assoc()['total'];

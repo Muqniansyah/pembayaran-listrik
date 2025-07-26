@@ -31,3 +31,5 @@ class PenggunaanServiceTest extends TestCase {
         $this->assertTrue($deleted);
     }
 }
+
+// jalankan dengan : vendor/bin/phpunit test/PenggunaanServiceTest.php
